@@ -1,0 +1,301 @@
+﻿/* ========================= GENERAL ========================= */
+body {
+    margin: 0;
+    font-family: 'Fredoka', sans-serif;
+    background: #ff2323;
+}
+
+    /* -------------------- INDEX.HTML / WELCOME PAGE -------------------- */
+    body.index {
+        background: #e1251b;
+    }
+
+.container {
+    background: #f7efdd;
+    margin: 40px;
+    padding: 60px 40px;
+    text-align: center;
+    border-radius: 5px;
+    position: relative;
+}
+
+.fecha {
+    display: flex;
+    justify-content: center;
+    gap: 220px;
+    font-size: 26px;
+    color: #7c1f16;
+    letter-spacing: 4px;
+    margin-bottom: 15px;
+}
+
+.tomato-img {
+    width: 150px;
+    margin: auto;
+    display: block;
+}
+
+h1 {
+    font-size: 70px;
+    color: #7c1f16;
+    line-height: 1.1;
+    margin: 30px 0 10px;
+    font-weight: 400;
+}
+
+.subtitulo {
+    font-size: 40px;
+    color: #7c1f16;
+    letter-spacing: 3px;
+    margin-bottom: 30px;
+}
+
+.linea {
+    width: 90%;
+    height: 2px;
+    background: #7c1f16;
+    margin: 20px auto;
+}
+
+.descripcion {
+    font-size: 28px;
+    color: #7c1f16;
+    width: 80%;
+    margin: auto;
+    margin-bottom: 40px;
+}
+
+.boton {
+    background: #bb3d2f;
+    color: white;
+    padding: 20px 60px;
+    font-size: 28px;
+    border-radius: 50px;
+    display: inline-block;
+    cursor: pointer;
+    border: none;
+    transition: 0.2s;
+}
+
+    .boton:hover {
+        background: #992a20;
+    }
+
+.tomate-left, .tomate-right {
+    position: absolute;
+    bottom: 20px;
+    width: 120px;
+}
+
+.tomate-left {
+    left: 40px;
+}
+
+.tomate-right {
+    right: 40px;
+}
+
+/* -------------------- WARNING.HTML -------------------- */
+body.warning {
+    background: black;
+    color: red;
+}
+
+.warning-container {
+    text-align: center;
+    padding: 80px 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.warning-icon {
+    width: 230px;
+    margin-bottom: 40px;
+}
+
+.warning-title {
+    font-size: 120px;
+    font-weight: 900;
+    margin: 0;
+    letter-spacing: 5px;
+}
+
+    .warning-title span {
+        font-size: 150px;
+    }
+
+.warning-text {
+    font-size: 32px;
+    margin-top: 40px;
+    line-height: 1.5;
+}
+
+.warning-btn {
+    margin-top: 60px;
+    background: #ff0000;
+    color: white;
+    font-size: 26px;
+    padding: 15px 60px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+    .warning-btn:hover {
+        background: #b30000;
+    }
+
+/* -------------------- INFO.HTML -------------------- */
+body.info {
+    background: #ff2323;
+}
+
+.section {
+    background: #ffe9d2;
+    margin: 50px auto;
+    width: 90%;
+    border-radius: 20px;
+    padding: 40px 30px;
+    color: #8a2d1f;
+    font-size: 22px;
+    line-height: 1.6;
+    position: relative;
+}
+
+h2 {
+    text-align: center;
+    color: #8a2d1f;
+    font-size: 34px;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.img-small {
+    width: 140px;
+    display: block;
+    margin: 20px auto;
+}
+
+.img-medium {
+    width: 220px;
+    display: block;
+    margin: 25px auto;
+    border-radius: 30px;
+}
+
+.start-btn {
+    display: block;
+    margin: 40px auto 0;
+    background: #b43324;
+    color: white;
+    padding: 12px 45px;
+    border-radius: 50px;
+    font-size: 20px;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* -------------------- POMODORO.HTML -------------------- */
+body.pomodoro {
+    background: #f5f7fa;
+    color: #1e1e1e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
+}
+
+.pomodoro-container {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+
+#mode {
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #4a6cf7;
+}
+
+#timer {
+    font-size: 60px;
+    font-weight: 600;
+    margin: 20px 0;
+}
+
+button {
+    padding: 12px 25px;
+    margin: 5px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    background: #4a6cf7;
+    color: white;
+    transition: 0.2s;
+}
+
+    button:hover {
+        background: #2f52d0;
+    }
+
+.theme-btn {
+    padding: 6px 12px;
+    margin: 3px;
+    border-radius: 8px;
+    border: 1px solid #555;
+    background: #fff;
+    color: #1e1e1e;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+    .theme-btn:hover {
+        background: #4a6cf7;
+        color: white;
+    }
+
+/* Inputs del Pomodoro */
+.inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+    .inputs.hidden {
+        opacity: 0;
+        transform: translateY(-10px);
+        pointer-events: none;
+    }
+
+.input-box {
+    text-align: left;
+}
+
+label {
+    font-size: 14px;
+    color: #555;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}

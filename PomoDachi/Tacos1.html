@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PomoDachi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body class="pomodoro">
+
+    <div class="pomodoro-container">
+
+        <h1>PomoDachi</h1>
+
+        <div>
+            <button class="theme-btn" onclick="setTheme('light')">Claro</button>
+            <button class="theme-btn" onclick="setTheme('dark')">Oscuro</button>
+            <button class="theme-btn" onclick="setTheme('neon')">Neón</button>
+        </div>
+
+        <div id="inputsBox" class="inputs">
+            <div class="input-box">
+                <label>Trabajo (min)</label>
+                <input id="workTime" type="number" value="25" min="1">
+            </div>
+            <div class="input-box">
+                <label>Descanso (min)</label>
+                <input id="breakTime" type="number" value="5" min="1">
+            </div>
+            <div class="input-box">
+                <label>Descanso largo</label>
+                <input id="longBreakTime" type="number" value="15" min="1">
+            </div>
+            <div class="input-box">
+                <label>Ciclos totales</label>
+                <input id="cycles" type="number" value="4" min="1">
+            </div>
+        </div>
+
+        <div id="mode">Modo: Trabajo</div>
+        <div id="timer">25:00</div>
+
+        <button id="startBtn">Iniciar</button>
+        <button id="pauseBtn">Pausar</button>
+
+    </div>
+
+    <script src="js/pomodoro.js"></script>
+</body>
+</html>
