@@ -1,0 +1,332 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PomoDachi-Pomo</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Nunito:wght@600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #FFF6F0;
+            --panel: #ffffff;
+            --primary: #d45b5b;
+            --primary-dark: #b84747;
+            --primary-light: #f0c3c3;
+            --text: #6a2f2f;
+            --text-dark: #532020;
+            --shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-dark);
+            display: flex;
+            justify-content: center;
+            padding: 30px 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: var(--panel);
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .title {
+            font-family: 'Nunito', sans-serif;
+            font-size: 34px;
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+        }
+
+        .cycles-box {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            padding: 10px 20px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .mode {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        #timer {
+            font-family: 'Nunito', sans-serif;
+            font-size: 64px;
+            color: var(--primary-dark);
+            margin-bottom: 20px;
+        }
+
+        .progress-container {
+            width: 100%;
+            background: #eee;
+            height: 12px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        #progressBar {
+            height: 100%;
+            width: 0%;
+            background: var(--primary);
+            transition: width .3s linear;
+        }
+
+        button {
+            border: none;
+            padding: 10px 22px;
+            border-radius: 18px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 15px;
+            margin: 5px 8px;
+            background: var(--primary);
+            color: white;
+            transition: .25s;
+        }
+
+            button:hover {
+                background: var(--primary-dark);
+            }
+
+        .settings-box {
+            background: #fff8f8;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: inset 0 0 8px rgba(0,0,0,0.08);
+            margin-top: 20px;
+        }
+
+        .settings-title {
+            font-weight: 700;
+            margin-bottom: 15px;
+            font-size: 18px;
+            color: var(--primary-dark);
+        }
+
+        .input-group {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+        }
+
+        label {
+            font-size: 15px;
+        }
+
+        input {
+            width: 65px;
+            padding: 8px;
+            text-align: center;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            font-size: 15px;
+        }
+
+            input:disabled {
+                background: #f5e2e2;
+                color: #888;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <div class="title">PomoDachi</div>
+
+        <div class="cycles-box">
+            Ciclos completados: <span id="doneCycles">0</span> / <span id="totalCycles">4</span>
+        </div>
+
+        <div class="mode" id="mode">Modo: Trabajo</div>
+        <div id="timer">25:00</div>
+
+        <div class="progress-container">
+            <div id="progressBar"></div>
+        </div>
+
+        <div style="text-align:center;">
+            <button id="startBtn">Iniciar</button>
+            <button id="pauseBtn">Pausa</button>
+        </div>
+
+        <div class="settings-box" id="inputsBox">
+            <div class="settings-title">Ajustar tiempos</div>
+            <div class="input-group">
+                <label>Trabajo (min):</label>
+                <input id="workTime" type="number" min="1" value="25">
+            </div>
+            <div class="input-group">
+                <label>Descanso corto (min):</label>
+                <input id="breakTime" type="number" min="1" value="5">
+            </div>
+            <div class="input-group">
+                <label>Descanso largo (min):</label>
+                <input id="longBreakTime" type="number" min="1" value="15">
+            </div>
+            <div class="input-group">
+                <label>Total ciclos:</label>
+                <input id="cycles" type="number" min="1" value="4">
+            </div>
+        </div>
+
+    </div>
+
+    <audio id="beepSound">
+        <source src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" type="audio/ogg">
+    </audio>
+
+    <script>
+        const $ = id => document.getElementById(id);
+        const fmt = s => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
+        const beep = () => { const s = $("beepSound"); s.currentTime = 0; s.play(); };
+
+        class Pomodoro {
+            constructor() {
+                this.ui = {
+                    timer: $("timer"),
+                    mode: $("mode"),
+                    progress: $("progressBar"),
+                    done: $("doneCycles"),
+                    total: $("totalCycles"),
+                    inputsBox: $("inputsBox"),
+                    inputs: {
+                        w: $("workTime"),
+                        b: $("breakTime"),
+                        l: $("longBreakTime"),
+                        c: $("cycles")
+                    },
+                    start: $("startBtn"),
+                    pause: $("pauseBtn")
+                };
+                this.reset();
+                this.bind();
+                this.updateUI();
+            }
+
+            get values() {
+                return {
+                    w: +this.ui.inputs.w.value,
+                    b: +this.ui.inputs.b.value,
+                    l: +this.ui.inputs.l.value,
+                    c: +this.ui.inputs.c.value
+                };
+            }
+
+            reset() {
+                const v = this.values;
+                this.isWork = true;
+                this.done = 0;
+                this.state = 'idle';
+                this.time = v.w * 60;
+                this.total = this.time;
+                this.interval = null;
+                this.lockInputs(false);
+            }
+
+            bind() {
+                this.ui.start.onclick = () => this.start();
+                this.ui.pause.onclick = () => this.pause();
+                Object.values(this.ui.inputs).forEach(inp => {
+                    inp.addEventListener("input", () => {
+                        if (this.state === 'idle') {
+                            this.time = this.values.w * 60;
+                            this.total = this.time;
+                            this.updateUI();
+                        }
+                    });
+                });
+            }
+
+            lockInputs(lock) {
+                Object.values(this.ui.inputs).forEach(i => i.disabled = lock);
+                this.ui.inputsBox.style.opacity = lock ? 0.5 : 1;
+            }
+
+            updateUI() {
+                this.ui.timer.textContent = fmt(this.time);
+                if (this.done >= this.values.c && !this.isWork) {
+                    this.ui.mode.textContent = "Descanso largo final";
+                } else {
+                    this.ui.mode.textContent = this.isWork ? "Modo: Trabajo" : "Modo: Descanso";
+                }
+                this.ui.done.textContent = this.done;
+                this.ui.total.textContent = this.values.c;
+                this.ui.progress.style.width = `${100 - (this.time / this.total) * 100}%`;
+            }
+
+            start() {
+                if (this.state === 'running') return;
+                this.lockInputs(true);
+                this.state = 'running';
+                if (this.interval) clearInterval(this.interval);
+                this.interval = setInterval(() => this.tick(), 1000);
+            }
+
+            pause() {
+                if (this.state !== 'running') return;
+                clearInterval(this.interval);
+                this.interval = null;
+                this.state = 'paused';
+            }
+
+            tick() {
+                this.time--;
+                if (this.time < 0) {
+                    this.nextStage();
+                } else {
+                    this.updateUI();
+                }
+            }
+
+            nextStage() {
+                beep();
+                const v = this.values;
+                if (this.isWork) this.done++;
+
+                if (this.done >= v.c) {
+                    if (this.isWork) {
+                        
+                        this.isWork = false;
+                        this.time = v.l * 60;
+                        this.total = this.time;
+                        this.updateUI();
+                    } else {
+                    
+                        this.finish();
+                    }
+                    return;
+                }
+
+                this.isWork = !this.isWork;
+                this.time = this.isWork ? v.w * 60 : v.b * 60;
+                this.total = this.time;
+                this.updateUI();
+            }
+
+            finish() {
+                clearInterval(this.interval);
+                this.interval = null;
+                this.state = 'finished';
+                this.lockInputs(false);
+                this.updateUI();
+                alert("¡Jornada completada!");
+                this.reset();
+            }
+        }
+
+        new Pomodoro();
+    </script>
+</body>
+</html>
